@@ -3,59 +3,11 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const config = require("../config");
-const Mailgen = require('mailgen');
-
-// const { google } = require('googleapis');
-
-// const OAuth2 = google.auth.OAuth2;
-
-// Create OAuth2 client
-// const oauth2Client = new OAuth2(
-//   process.env.CLIENT_ID,
-//   process.env.CLIENT_SECRET,
-//   'https://developers.google.com/oauthplayground' // Redirect URL
-// );
-
-// // Set the refresh token
-// oauth2Client.setCredentials({
-//   refresh_token: process.env.REFRESH_TOKEN,
-// });
-
-// Send verification email function
-// Send verification email function
-const sendVerificationEmail = async (email, token) => {
-  try {
-    // Create Nodemailer transport
-    const transporter = nodemailer.createTransport({
-      host: "live.smtp.mailtrap.io",
-      port: 2525,
-      auth: {
-        user: "api",
-        pass: "adf3a163f9ba8d70b41e4e8025cacd2a"
-      }
-    });
-
-    // console.log(email)
-    // Define email options
-    const mailOptions = {
-      from: process.env.EMAIL, // Replace with your app's email address
-      to: email,
-      subject: 'Verify Your Email',
-      html: `<p>Click <a href="${process.env.BASE_URL}/verify/${token}">here</a> to verify your email.</p>`,
-    };
-
-    // Send email
-    await transporter.sendMail(mailOptions);
-    return true;
-  } catch (error) {
-    console.error('Error sending email:', error);
-    return false;
-  }
-};
+// const Mailgen = require('mailgen');
 
 exports.register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { name, username, email, password } = req.body;
 
     // Check if the username or email already exists
     const existingUser = await User.findOne({
@@ -78,6 +30,7 @@ exports.register = async (req, res) => {
 
     // Create a new user
     const user = new User({
+      name,
       username,
       password: hashedPassword,
       email,
@@ -98,6 +51,35 @@ exports.register = async (req, res) => {
     res.status(500).json({ message: 'Error registering user', error });
   }
 };
+
+// Function to send the verification email (using Nodemailer or any email service)
+const sendVerificationEmail = async (email, token) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Email Verification',
+      text: `Please verify your email by clicking the following link: ${process.env.BASE_URL}/verify/${token}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+    return true;  // Email sent successfully
+  } catch (error) {
+    console.error('Error sending verification email:', error);
+    return false;
+  }
+};
+
+
+
 
 exports.login = async (req, res) => {
   const { username, password } = req.body;

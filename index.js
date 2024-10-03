@@ -5,6 +5,19 @@ require("./db");
 const User = require("./models/user");
 const jwt = require("jsonwebtoken");
 
+const admin = require('firebase-admin');
+
+// Initialize Firebase Admin SDK
+admin.initializeApp({
+  credential: admin.credential.cert({
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+  }),
+});
+
+console.log('Firebase Admin SDK initialized.');
+
 const app = express();
 
 const allowedOrigins = [
@@ -33,6 +46,7 @@ app.options('*', (req, res) => {
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.sendStatus(200); // Respond with OK for preflight checks
 });
+
 
 
 app.use(bodyParser.json());
