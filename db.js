@@ -8,8 +8,6 @@ const mongoURI =
   process.env.MONGO_URI;
 
 mongoose.connect(mongoURI, {
-  useNewUrlParser: true, // Optional, can be removed
-  useUnifiedTopology: true, // Optional, can be removed  
   writeConcern: {
     w: 'majority',
     wtimeout: 1000  // Adjust this timeout as needed

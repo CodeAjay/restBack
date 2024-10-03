@@ -4,8 +4,6 @@ const cors = require('cors')
 require("./db");
 const User = require("./models/user");
 const jwt = require("jsonwebtoken");
-const config = require("../config");
-require("dotenv").config();
 
 const app = express();
 
