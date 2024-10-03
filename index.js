@@ -86,7 +86,9 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/general", generalRoutes);
 app.use("/api/feedback", feedbackRoutes);
 
-app.get("/", (req, res) => { res.send("Express on Vercel"); });
+app.get("/", (req, res) => { 
+  res.send("Express on Vercel"); 
+});
 
 
 app.listen(3000, () => {
