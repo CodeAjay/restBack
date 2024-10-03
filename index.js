@@ -7,8 +7,6 @@ const jwt = require("jsonwebtoken");
 
 const app = express();
 
-const cors = require('cors');
-
 app.use(cors({
   origin: 'http://localhost:5173', // Allow your frontend's origin
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow specific HTTP methods
@@ -87,6 +85,9 @@ app.use("/api/reservations", reservationRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/general", generalRoutes);
 app.use("/api/feedback", feedbackRoutes);
+
+app.get("/", (req, res) => { res.send("Express on Vercel"); });
+
 
 app.listen(3000, () => {
   console.log("Server running on port 3000");
