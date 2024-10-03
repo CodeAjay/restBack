@@ -9,12 +9,16 @@ const jwt = require("jsonwebtoken");
 const app = express();
 
 
-// Serve static assets in production
-if (process.env.NODE_ENV === 'production') {
-  // Set static folder for React
-  app.use(express.static('client/build'));
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'API is working!' });
+});
 
-  // Serve index.html for all unknown routes (important for React Router)
+// Serve React app if in production
+if (process.env.NODE_ENV === 'production') {
+  // Serve static assets from the React app
+  app.use(express.static(path.join(__dirname, 'client', 'build')));
+
+  // Catch-all route for React Router
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
