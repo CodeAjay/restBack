@@ -1,5 +1,5 @@
 module.exports = {
     secret: "supersecretkey",
-    // baseUrl: 'http://localhost:3000'
+    baseUrl: 'https://rest-back-bice.vercel.app/'
   };
   
