@@ -1,28 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require('cors')
-const path = require('path');
 require("./db");
 const User = require("./models/user");
 const jwt = require("jsonwebtoken");
 
 const app = express();
-
-
-app.get('/api/test', (req, res) => {
-  res.json({ message: 'API is working!' });
-});
-
-// Serve React app if in production
-if (process.env.NODE_ENV === 'production') {
-  // Serve static assets from the React app
-  app.use(express.static(path.join(__dirname, 'client', 'build')));
-
-  // Catch-all route for React Router
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
-}
 
 const allowedOrigins = [
   'https://rest-front.vercel.app',  // Deployed frontend URL
