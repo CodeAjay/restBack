@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const config = require("../config");
 // const Mailgen = require('mailgen');
+require("dotenv").config();
 
 exports.register = async (req, res) => {
   try {
