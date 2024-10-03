@@ -10,16 +10,17 @@ const app = express();
 app.use(cors({
   origin: 'http://localhost:5173', // Allow your frontend's origin
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow specific HTTP methods
-  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'], // Allow custom headers
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'x-auth-token'], // Add 'x-auth-token'
   credentials: true // If you're using cookies or authentication tokens
 }));
 
 app.options('*', (req, res) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, x-auth-token');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.sendStatus(200); // Respond with OK for preflight checks
 });
+
 
 
 app.use(bodyParser.json());
