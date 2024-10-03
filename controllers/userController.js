@@ -2,7 +2,7 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-const config = require("../config");
+// const config = require("../config");
 // const Mailgen = require('mailgen');
 
 exports.register = async (req, res) => {
