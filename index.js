@@ -7,24 +7,37 @@ const jwt = require("jsonwebtoken");
 
 const app = express();
 
+const allowedOrigins = [
+  'https://rest-front.vercel.app',  // Deployed frontend URL
+  'http://localhost:3000',          // Localhost (for development)
+];
+
 app.use(cors({
-  origin: 'https://rest-front.vercel.app/', // Allow your frontend's origin
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      // If no origin (like in a mobile app) or the origin is allowed
+      callback(null, true);
+    } else {
+      // Reject the request if the origin is not allowed
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow specific HTTP methods
-  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'x-auth-token'], // Add 'x-auth-token'
-  credentials: true // If you're using cookies or authentication tokens
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'x-auth-token'], // Allow headers
+  credentials: true,  // If you're using cookies or authentication tokens
 }));
 
 app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Origin', 'https://rest-front.vercel.app/');
+  res.header('Access-Control-Allow-Origin', '*');  // Allow all origins for preflight (you may also set specific origins)
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, x-auth-token');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.sendStatus(200); // Respond with OK for preflight checks
 });
 
 
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
 
 // const userController = require("./controllers/userController");
 
