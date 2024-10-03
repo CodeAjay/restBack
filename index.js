@@ -9,7 +9,7 @@ const app = express();
 
 const allowedOrigins = [
   'https://rest-front.vercel.app',  // Deployed frontend URL
-  'http://localhost:3000',          // Localhost (for development)
+  'http://localhost:5173/',          // Localhost (for development)
 ];
 
 app.use(cors({
